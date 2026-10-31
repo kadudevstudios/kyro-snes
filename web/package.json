@@ -1,0 +1,18 @@
+{
+  "name": "kyro-snes-port-web",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "description": "Kyro SNES Port — web player shell around a self-hosted snes9x WASM core",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7"
+  }
+}

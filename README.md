@@ -1,60 +1,39 @@
-# 🎮 KYRO SNES Port
+# Kyro SNES Port
 
-**A faithful Super Nintendo experience on Windows and the Web.**
+Um port jogável de um jogo de Super Nintendo para **navegador** e **Windows**, com fidelidade total ao original — porque o jogo roda no núcleo **snes9x** compilado para WebAssembly, em vez de uma reimplementação.
 
-KYRO SNES Port is a playable SNES emulator application for Windows and modern browsers, powered by the **Snes9x emulation core compiled to WebAssembly**.
-
-Instead of reimplementing the original game's logic, KYRO uses an established SNES emulation core to reproduce the original hardware behavior.
-
-> **No game ROMs are distributed with this project.** You import a game file you are legally authorized to use. ROM files are processed locally and stored on your device.
+> **Nenhuma ROM é distribuída com este projeto.** O aplicativo não contém o jogo. Você importa o arquivo que já possui; ele é lido no seu dispositivo e guardado apenas nele.
 
 ---
 
-## 🚀 Download
+## O que é isto
 
-**Latest version: 1.0.0**
+Um **shell moderno** em volta de um núcleo de emulação SNES de referência:
 
-[⬇️ Download KYRO SNES Port 1.0.0](../../releases/latest)
+- biblioteca local de ROMs, com inspeção técnica do cartucho;
+- player com escala inteira ou ajustada, proporção 8:7 ou 4:3, filtro, scanlines, HUD próprio e avanço rápido;
+- save states em 3 slots com miniatura, persistidos em IndexedDB;
+- remapeamento de teclado e gamepad;
+- configurações de áudio (com tom de teste), HUD, save automático da SRAM, exportar/importar e restaurar padrões;
+- build web estática e executável Windows `.exe` (versão **1.1.0**).
 
-**Windows executable:** `Kyro-SNES-Port-1.0.0.exe`
-
-For the browser version, follow the development and production build instructions below.
-
----
-
-## ✨ Features
-
-- Local ROM library with cartridge inspection.
-- SNES emulator powered by Snes9x through WebAssembly.
-- Pixel-perfect scaling and adjustable display ratios (8:7 and 4:3).
-- Image filters, optional scanlines and custom HUD.
-- Three save-state slots with screenshots.
-- SRAM persistence for in-game saves.
-- Keyboard and gamepad support.
-- Touch controls on compatible mobile devices.
-- Remappable controls.
-- Audio settings and test tone.
-- Automatic SRAM saving.
-- Import and export settings.
-- Local storage using IndexedDB and localStorage.
+A decisão de arquitetura (emulação × reconstrução nativa) está documentada em [`docs/DECISAO.md`](docs/DECISAO.md).
 
 ---
 
-## 💻 Requirements
+## Requisitos
 
-| Platform | Requirements |
+| Plataforma | Requisitos |
 |---|---|
-| Web | Modern browser with WebAssembly and WebGL |
+| Web | Navegador moderno com WebAssembly e WebGL (Chrome/Edge/Firefox/Safari recentes) |
 | Windows | Windows 10/11 x64 |
-| Development | Node.js 20+ and npm |
-
-Supported browsers include recent versions of Chrome, Edge, Firefox and Safari.
+| Desenvolvimento | Node.js 20+ e npm |
 
 ---
 
-## ⚡ Getting Started
+## Começar rápido
 
-### Web development
+### Web (desenvolvimento)
 
 ```bash
 cd web
@@ -62,42 +41,28 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`, import your ROM (`.smc`, `.sfc`, `.fig`, `.bin` or `.zip`) and click **Play**.
+Abra `http://localhost:5173`, arraste sua ROM (`.smc`, `.sfc`, `.fig`, `.bin` ou `.zip`) e clique em **Jogar**.
 
-### Web production build
+### Web (build de produção)
 
 ```bash
 cd web
 npm install
-npm run build
-npm run preview
+npm run build      # gera web/dist
+npm run preview    # serve o build em http://localhost:4173
 ```
 
-The production build is generated in `web/dist`.
+O conteúdo de `web/dist` é estático e pode ser hospedado em qualquer servidor HTTP (Netlify, Vercel, nginx, GitHub Pages). **Não abra via `file://`**: módulos ES e o carregamento do WASM exigem HTTP.
 
-It can be hosted on any HTTP server, including Netlify, Vercel, nginx and GitHub Pages.
+### Windows (.exe)
 
-**Important:** Do not open the application through `file://`. WebAssembly and ES modules require HTTP hosting.
-
-### Windows executable
-
-Build the application using PowerShell:
-
-```powershell
+```bash
 powershell -ExecutionPolicy Bypass -File scripts/build-all.ps1
 ```
 
-The portable executable is generated at:
+O executável portátil é gerado em `desktop/release/Kyro-SNES-Port-1.1.0.exe` (~107 MiB). O binário não é assinado, então o SmartScreen pode pedir confirmação na primeira execução.
 
-```text
-desktop/release/Kyro-SNES-Port-1.0.0.exe
-```
-
-Approximate size: **107 MiB**.
-
-The executable is currently unsigned, so Windows SmartScreen may display a warning on first launch.
-
-#### Windows development mode
+Para rodar em modo de desenvolvimento:
 
 ```bash
 cd desktop
@@ -105,173 +70,121 @@ npm install
 npm start
 ```
 
-**Note about npm 11+:** The `allow-scripts` policy may block Electron's postinstall script. If Electron fails to download its binary, run:
-
-```bash
-node node_modules/electron/install.js
-```
-
-from inside `desktop/`.
+> **Nota sobre npm 11+:** a política de `allow-scripts` pode bloquear o postinstall do Electron. Se `electron` não baixar o binário, rode `node node_modules/electron/install.js` dentro de `desktop/`.
 
 ---
 
-## 🎮 How to Use
+## Como usar
 
-1. **Import:** Drag a ROM into the application or use the Import ROM option.
-2. **Inspect:** Open the cartridge information panel to inspect its technical metadata.
-3. **Play:** Click Play and then Start Game. The additional click enables browser audio.
-4. **Save:** Press `F5` to save a state in slot 1.
-5. **Load:** Press `F8` to load the state from slot 1.
+1. **Importar** — arraste a ROM para a janela ou use *Importar ROM*. Arquivos `.zip` são abertos automaticamente.
+2. **Inspecionar** — o botão de chip no cartão abre a análise do header (região, mapeamento, checksum, SHA-256, entropia por banco).
+3. **Jogar** — clique em *Jogar* e depois em *Iniciar jogo* (o clique é necessário para liberar o áudio no navegador).
+4. **Salvar** — `F5` grava o estado no slot 1; `F8` carrega. A interface tem 3 slots com miniatura.
 
-### Keyboard shortcuts
+### Atalhos
 
-| Key | Action |
+| Tecla | Ação |
 |---|---|
-| `Esc` | Pause / Resume or exit fullscreen |
-| `F5` | Save state to slot 1 |
-| `F8` | Load state from slot 1 |
-| `F11` | Toggle fullscreen |
-| `M` | Mute audio |
+| `Esc` | Pausar / retomar (ou sair da tela cheia) |
+| `F` | Ligar/desligar avanço rápido |
+| `F5` | Salvar estado no slot 1 |
+| `F8` | Carregar estado do slot 1 |
+| `F11` | Tela cheia |
+| `M` | Silenciar |
 
-### Default controller mapping
+Mapeamento padrão do controle SNES:
 
-| SNES Button | Keyboard | Gamepad |
+| SNES | Teclado | Gamepad |
 |---|---|---|
-| D-pad | Arrow keys | D-pad / Analog |
-| A | `X` | Button 1 |
-| B | `Z` | Button 2 |
-| X | `S` | Button 3 |
-| Y | `A` | Button 4 |
+| D-pad | Setas | D-pad / analógico |
+| A | `X` | Botão 1 |
+| B | `Z` | Botão 2 |
+| X | `S` | Botão 3 |
+| Y | `A` | Botão 4 |
 | L / R | `Q` / `W` | LB / RB |
 | Start | `Enter` | Start |
 | Select | `Tab` | Select |
 
-All controls can be remapped under **Settings → Controls**.
+Tudo pode ser remapeado em **Configurações → Controles** (ou nos ajustes rápidos durante o jogo).
 
 ---
 
-## 🔬 ROM Inspection
+## Funcionalidades
 
-KYRO includes a technical cartridge inspection system with:
-
-- Internal cartridge title.
-- Region detection.
-- Mapping information.
-- ROM size.
-- Header inspection at `0x7FC0`.
-- Checksum analysis.
-- SHA-256 and CRC-32 hashes.
-- Entropy analysis per 16 KB bank.
-- Copier header detection.
-
-The ROM inspection system helps identify and analyze the imported cartridge without distributing game content.
+- **Biblioteca local** com identificação automática pelo header interno (título, região, mapeamento, tamanho, checksum).
+- **Inspeção técnica** da ROM: header em `0x7FC0`, par de checksum, SHA-256, CRC-32, entropia por banco de 16 KB, detecção de header de copier.
+- **Player** com escala inteira ou ajustada, proporção 8:7/4:3, filtro nítido/suave, scanlines opcionais, tela cheia, HUD que se esconde sozinho e avanço rápido.
+- **Pausa** com captura do quadro atual ao fundo, retomada, reinício e saída.
+- **Save states** de 3 slots com miniatura grande, confirmação antes de sobrescrever/apagar, mais o SRAM do próprio jogo (salvos de fase).
+- **Controles**: teclado, gamepad (Gamepad API) e toque em dispositivos móveis.
+- **Persistência** em IndexedDB/localStorage — nada sai do dispositivo.
+- **Pausa automática** ao perder o foco (configurável).
 
 ---
 
-## 🏗️ Project Structure
+## Estrutura
 
 ```text
 KYRO-SNES-PORT/
 ├── docs/
-│   ├── ANALISE-ROM.md
-│   ├── ARQUITETURA.md
-│   ├── DECISAO.md
-│   └── TESTES.md
+│   ├── ANALISE-ROM.md        # engenharia reversa do cartucho fornecido
+│   ├── ARQUITETURA.md        # módulos, fluxo de dados, protocolo
+│   ├── DECISAO.md            # emulação × reconstrução nativa
+│   ├── CHANGELOG.md          # histórico de versões
+│   └── TESTES.md             # o que foi validado e como
 ├── web/
-│   ├── public/emu/
+│   ├── public/emu/           # runtime EmulatorJS + núcleo snes9x (auto-hospedado)
 │   ├── src/
-│   │   ├── core/
-│   │   ├── emulator/
-│   │   ├── player/
-│   │   ├── ui/
+│   │   ├── core/             # ROM, IndexedDB, settings, controles, ZIP
+│   │   ├── emulator/         # protocolo e bridge (iframe ↔ shell)
+│   │   ├── player/           # entrada do iframe do emulador
+│   │   ├── ui/               # shell, telas, componentes
 │   │   └── styles/
 │   ├── index.html
 │   ├── player.html
 │   └── vite.config.ts
-├── desktop/
+├── desktop/                  # Electron + empacotamento
 │   ├── main.js
 │   ├── preload.js
 │   ├── static-server.js
-│   └── build/
-├── scripts/
-├── tests/
+│   └── build/icon.ico
+├── scripts/                  # build e re-vendorização do runtime
+├── tests/                    # e2e com Playwright + análise de pixels
 └── README.md
 ```
 
 ---
 
-## ⚠️ Known Limitations
+## Limitações conhecidas
 
-- This project is an emulation-based application, not a native reconstruction of the original game.
-- A legally obtained ROM is required to play.
-- Cheats, netplay and video recording are not exposed in the application interface.
-- WebGL1 is used by default for broader compatibility.
-- Browser audio requires a user interaction before playback.
-- SRAM saves are managed by the emulation runtime, while save states are managed by the KYRO interface.
+- **Não é uma reconstrução nativa.** A lógica do jogo é executada pelo núcleo snes9x; não há código-fonte do jogo neste repositório. Ver [`docs/DECISAO.md`](docs/DECISAO.md).
+- **ROM necessária.** Sem o arquivo do jogo, o aplicativo abre apenas a biblioteca vazia.
+- **Cheats, netplay e gravação de vídeo** do EmulatorJS estão desativados na interface (o runtime os suporta, mas não foram expostos).
+- **WebGL2** não é habilitado por padrão; o núcleo usa o renderizador legado (WebGL1), que é o padrão testado do EmulatorJS e funciona em mais máquinas.
+- **Áudio** depende de um gesto do usuário (clique em *Iniciar jogo*), por política dos navegadores.
+- **SRAM** (save do próprio jogo) é mantida pelo runtime; save states são geridos pelo shell.
 
 ---
 
-## 🧪 Testing
-
-The project includes automated end-to-end testing with Playwright.
+## Testes
 
 ```bash
-cd web
-npm run build
-
-cd ../tests
-npm install
-```
-
-Set the path to a ROM you are legally authorized to use:
-
-```powershell
-$env:KYRO_TEST_ROM = "C:\path\to\your\rom.smc"
+cd web && npm run build
+cd ../tests && npm install
+set KYRO_TEST_ROM=C:\caminho\para\sua\rom.smc
 node run-e2e.mjs
 ```
 
-The test suite can verify ROM import, emulator startup, rendered pixels, pause/resume, save states and IndexedDB persistence.
-
-See [`docs/TESTES.md`](docs/TESTES.md) for details.
+O teste abre o build real no Chrome, importa a ROM, inicia o núcleo, **analisa os pixels renderizados**, pausa/retoma (verificando o snapshot), alterna o avanço rápido, grava e carrega save states, testa a sobrescrita de slot com confirmação e verifica o IndexedDB. São 39 verificações; resultados em [`docs/TESTES.md`](docs/TESTES.md).
 
 ---
 
-## 📜 Licensing and Credits
+## Licenciamento e créditos
 
-- **KYRO application shell:** MIT.
-- **EmulatorJS 4.2.3:** GPL-3.0.
-- **Snes9x libretro core:** GPL-2.0-or-later.
+- Código do shell: MIT.
+- **EmulatorJS 4.2.3** — GPL-3.0 (runtime em `web/public/emu`), sem modificações.
+- **snes9x** (núcleo libretro, build WebAssembly do EmulatorJS) — GPL-2.0 ou posterior. O binário é redistribuído sob os termos da GPL; o código-fonte correspondente está em <https://github.com/libretro/snes9x> e os scripts de build em <https://github.com/EmulatorJS/build>.
+- Avisos completos, versões exatas e a oferta escrita de código-fonte estão em [`web/public/emu/THIRD-PARTY-NOTICES.md`](web/public/emu/THIRD-PARTY-NOTICES.md) (também publicado em `/emu/THIRD-PARTY-NOTICES.md` no build).
+- **Super Mario World** e todos os assets do jogo são propriedade da Nintendo. Este projeto não distribui ROM, BIOS, sprites, músicas nem qualquer material protegido.
 
-Third-party components retain their respective licenses.
-
-The corresponding source code, build scripts, license notices and required GPL compliance materials must be made available according to the applicable license terms.
-
-- [EmulatorJS](https://github.com/EmulatorJS/EmulatorJS)
-- [Snes9x Libretro](https://github.com/libretro/snes9x)
-- [EmulatorJS Build](https://github.com/EmulatorJS/build)
-
-See [`web/public/emu/THIRD-PARTY-NOTICES.md`](web/public/emu/THIRD-PARTY-NOTICES.md) for third-party notices.
-
-### Legal Notice
-
-KYRO SNES Port is an independent project and is not affiliated with, endorsed by, or sponsored by Nintendo.
-
-Super Nintendo and SNES are trademarks of their respective owners.
-
-No commercial ROMs, BIOS files, game sprites, music or other copyrighted game assets are distributed with this project.
-
-Users are responsible for ensuring they have the legal right to use any ROM files they import.
-
----
-
-## 🏢 KaduDev Studios
-
-Developed by **KaduDev Studios**.
-
-Built with passion for software engineering, emulation technology and classic gaming.
-
-**KYRO SNES Port — Classic gaming, reimagined.**
-
----
-
-<sub>KYRO SNES Port · Version 1.0.0 · © 2026 KaduDev Studios</sub>
+Ao usar este software você declara ter autorização para usar a ROM que importar.
