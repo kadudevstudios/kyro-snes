@@ -2,6 +2,9 @@
 
 **Português** · [English](README.en.md)
 
+[![CI](https://github.com/kadudevstudios/kyro-snes/actions/workflows/ci.yml/badge.svg)](https://github.com/kadudevstudios/kyro-snes/actions/workflows/ci.yml)
+[![Pages](https://github.com/kadudevstudios/kyro-snes/actions/workflows/pages.yml/badge.svg)](https://kadudevstudios.github.io/kyro-snes/)
+
 Um port jogável de um jogo de Super Nintendo para **navegador** e **Windows**, com fidelidade total ao original — porque o jogo roda no núcleo **snes9x** compilado para WebAssembly, em vez de uma reimplementação.
 
 > **Nenhuma ROM é distribuída com este projeto.** O aplicativo não contém o jogo. Você importa o arquivo que já possui; ele é lido no seu dispositivo e guardado apenas nele.

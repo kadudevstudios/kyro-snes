@@ -34,7 +34,8 @@ Player mais confortável, captura de tela confiável e correções de diálogos.
 
 - **Windows:** baixe `Kyro-SNES-Port-1.1.0.exe` e execute. É portátil, não
   instala nada. O binário não é assinado; o SmartScreen pode pedir confirmação.
-- **Web:** hospede o conteúdo de `web/dist` em qualquer servidor HTTP.
+- **Web:** jogue em <https://kadudevstudios.github.io/kyro-snes/> ou hospede o
+  conteúdo de `web/dist` em qualquer servidor HTTP.
 
 Nenhuma ROM é distribuída. Importe o arquivo que você já possui; ele fica
 apenas no seu dispositivo.

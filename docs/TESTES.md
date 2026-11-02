@@ -266,3 +266,30 @@ renderizada pelo núcleo dentro do binário final, com o servidor estático em
   então o Windows pode exibir o aviso do SmartScreen na primeira execução
   ("Windows protegeu o seu PC" → *Mais informações* → *Executar assim mesmo*).
   Assinar exigiria um certificado próprio; o build em si não é afetado.
+
+---
+
+## 8. CI e publicação
+
+| Workflow | O que faz |
+|---|---|
+| `CI` (`.github/workflows/ci.yml`) | `npm ci` + `npm run build` no `web` e, em seguida, o smoke sem ROM (`tests/run-smoke.mjs`) em Chrome headless |
+| `Pages` (`.github/workflows/pages.yml`) | builda `web/dist` e publica em <https://kadudevstudios.github.io/kyro-snes/> |
+
+O smoke de CI cobre o shell: montagem, biblioteca vazia, navegação e ausência de
+erros de console (4 verificações). A suíte completa continua sendo local, porque
+depende de uma ROM que o CI não pode distribuir.
+
+```powershell
+cd tests
+node run-smoke.mjs                                  # build local
+$env:KYRO_SMOKE_URL = "https://kadudevstudios.github.io/kyro-snes/"
+node run-smoke.mjs                                  # site publicado
+Remove-Item Env:\KYRO_SMOKE_URL
+```
+
+O build do Pages funciona em subcaminho porque o Vite usa `base: "./"` e o
+runtime resolve `emu/` a partir de `location.href`; nenhum caminho absoluto é
+usado. O site publicado respondeu `200` em `/`, `/player.html`,
+`/emu/loader.js`, `/emu/emulator.min.js` e
+`/emu/cores/snes9x-legacy-wasm.data`.

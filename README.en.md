@@ -2,6 +2,9 @@
 
 [Português](README.md) · **English**
 
+[![CI](https://github.com/kadudevstudios/kyro-snes/actions/workflows/ci.yml/badge.svg)](https://github.com/kadudevstudios/kyro-snes/actions/workflows/ci.yml)
+[![Pages](https://github.com/kadudevstudios/kyro-snes/actions/workflows/pages.yml/badge.svg)](https://kadudevstudios.github.io/kyro-snes/)
+
 A playable port of a Super Nintendo game for the **browser** and **Windows**, faithful to the original because the game runs on the **snes9x** core compiled to WebAssembly instead of a reimplementation.
 
 > **No ROM is distributed with this project.** The app does not contain the game. You import a file you already own; it is read on your device and stored only there.

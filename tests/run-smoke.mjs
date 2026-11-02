@@ -26,7 +26,8 @@ function check(name, ok, detail = "") {
 }
 
 const server = createServer(DIST);
-await new Promise((resolve) => server.listen(PORT, "127.0.0.1", resolve));
+const REMOTE = process.env.KYRO_SMOKE_URL;
+if (!REMOTE) await new Promise((resolve) => server.listen(PORT, "127.0.0.1", resolve));
 
 const browser = await chromium.launch({ channel: "chrome", headless: true, args: ["--mute-audio"] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -38,7 +39,7 @@ page.on("console", (message) => {
 });
 
 try {
-  await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: "networkidle" });
+  await page.goto(REMOTE ?? `http://127.0.0.1:${PORT}/`, { waitUntil: "networkidle" });
   await page.waitForSelector(".topbar", { timeout: 15_000 });
 
   check("shell monta", await page.locator(".brand__text").isVisible());
@@ -47,7 +48,7 @@ try {
   check("sem erros de console", errors.length === 0, errors.join(" | "));
 } finally {
   await browser.close();
-  server.close();
+  if (!REMOTE) server.close();
 }
 
 const failed = checks.filter((ok) => !ok).length;
