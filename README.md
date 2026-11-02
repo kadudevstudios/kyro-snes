@@ -1,10 +1,13 @@
 # Kyro SNES Port
 
+**Português** · [English](README.en.md)
+
 Um port jogável de um jogo de Super Nintendo para **navegador** e **Windows**, com fidelidade total ao original — porque o jogo roda no núcleo **snes9x** compilado para WebAssembly, em vez de uma reimplementação.
 
 > **Nenhuma ROM é distribuída com este projeto.** O aplicativo não contém o jogo. Você importa o arquivo que já possui; ele é lido no seu dispositivo e guardado apenas nele.
 
 **Download:** [Releases](https://github.com/kadudevstudios/kyro-snes/releases) — executável portátil para Windows e código-fonte.
+**Jogue no navegador:** <https://kadudevstudios.github.io/kyro-snes/>
 
 ---
 
@@ -55,6 +58,8 @@ npm run preview    # serve o build em http://localhost:4173
 ```
 
 O conteúdo de `web/dist` é estático e pode ser hospedado em qualquer servidor HTTP (Netlify, Vercel, nginx, GitHub Pages). **Não abra via `file://`**: módulos ES e o carregamento do WASM exigem HTTP.
+
+Build publicado: <https://kadudevstudios.github.io/kyro-snes/> — o workflow `Pages` publica `web/dist` a cada push na `main`.
 
 ### Windows (.exe)
 
@@ -151,8 +156,10 @@ KYRO-SNES-PORT/
 │   ├── static-server.js
 │   └── build/icon.ico
 ├── scripts/                  # build e re-vendorização do runtime
-├── tests/                    # e2e com Playwright + análise de pixels
-└── README.md
+├── tests/                    # e2e com Playwright + análise de pixels, smoke de CI
+├── .github/workflows/        # CI e deploy do GitHub Pages
+├── README.md
+└── README.en.md
 ```
 
 ---
