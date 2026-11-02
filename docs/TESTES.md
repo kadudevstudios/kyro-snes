@@ -228,9 +228,9 @@ presença do `data:` URL.
 | Item | Resultado |
 |---|---|
 | Build | `npx electron-builder --win portable` — exit 0 |
-| Artefato | `desktop/release/Kyro-SNES-Port-1.0.0.exe` — 112.621.288 bytes (107,4 MiB) |
+| Artefato | `desktop/release/Kyro-SNES-Port-1.1.0.exe` — 112.621.695 bytes (107,4 MiB) |
 | Conteúdo | `app.asar` com os 16 arquivos do build web (2,89 MiB), incluindo `emu/THIRD-PARTY-NOTICES.md` |
-| Smoke | `Kyro-SNES-Port-1.0.0.exe --smoke-test` — **exit code 0** |
+| Smoke | `Kyro-SNES-Port-1.1.0.exe --smoke-test` — **exit code 0** |
 
 O smoke do executável empacotado sobe o servidor HTTP em porta efêmera
 (loopback), abre uma janela oculta apontando para ele e espera até que
