@@ -4,6 +4,8 @@ Um port jogável de um jogo de Super Nintendo para **navegador** e **Windows**, 
 
 > **Nenhuma ROM é distribuída com este projeto.** O aplicativo não contém o jogo. Você importa o arquivo que já possui; ele é lido no seu dispositivo e guardado apenas nele.
 
+**Download:** [Releases](https://github.com/kadudevstudios/kyro-snes/releases) — executável portátil para Windows e código-fonte.
+
 ---
 
 ## O que é isto
